@@ -32,3 +32,5 @@ debug-prod:
 	@echo "Prod TFVARS files:"
 	@for file in $(PROD_TFVARS); do echo "  - $$file"; done
 	@echo "Flags: $(PROD_FLAGS)"
+infracost:
+	infracost breakdown --path . --show-skipped
