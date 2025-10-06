@@ -2,6 +2,7 @@ variable "project" {}
 variable "createdBy" {}
 variable "environment" {}
 variable "owner" {}
+variable "account_id" {}
 
 locals {
   tags = {

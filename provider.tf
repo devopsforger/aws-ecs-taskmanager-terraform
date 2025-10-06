@@ -6,6 +6,11 @@ terraform {
       version = "~> 6.14.1"
     }
   }
+
+  backend "s3" {
+    encrypt      = true
+    use_lockfile = true
+  }
 }
 
 # Configure the AWS Provider
