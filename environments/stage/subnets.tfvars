@@ -7,11 +7,11 @@ subnets = {
     vpc_name          = "main"
     tags = {
       Name = "NATPublicSubnet1"
-      Type = "nat"  # Clear purpose
+      Type = "nat" # Clear purpose
     }
   },
   "nat_public_2" = {
-    cidr_block        = "10.0.2.0/24" 
+    cidr_block        = "10.0.2.0/24"
     availability_zone = "us-east-1b"
     public            = true
     vpc_name          = "main"
