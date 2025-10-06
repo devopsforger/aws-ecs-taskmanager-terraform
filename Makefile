@@ -1,19 +1,34 @@
-.PHONY: stage-init stage-plan stage-apply prod-init prod-plan prod-apply
+.PHONY: stage-plan stage-apply prod-plan prod-apply debug-stage
+
+# Auto-detect all tfvars files for each environment
+STAGE_TFVARS := $(wildcard environments/stage/*.tfvars)
+PROD_TFVARS := $(wildcard environments/prod/*.tfvars)
+
+# Convert file list to -var-file flags
+STAGE_FLAGS := $(foreach file,$(STAGE_TFVARS),-var-file=$(file))
+PROD_FLAGS := $(foreach file,$(PROD_TFVARS),-var-file=$(file))
 
 stage-plan:
-	terraform plan -var-file="environments/stage/main.tfvars"
+	@echo "Loading stage tfvars: $(STAGE_TFVARS)"
+	terraform plan $(STAGE_FLAGS)
 
 stage-apply:
-	terraform apply -var-file="environments/stage/main.tfvars"
-
-stage-destroy:
-	terraform destroy -var-file="environments/stage/main.tfvars"
+	terraform apply $(STAGE_FLAGS)
 
 prod-plan:
-	terraform plan -var-file="environments/prod/main.tfvars"
+	@echo "Loading prod tfvars: $(PROD_TFVARS)"
+	terraform plan $(PROD_FLAGS)
 
 prod-apply:
-	terraform apply -var-file="environments/prod/main.tfvars"
+	terraform apply $(PROD_FLAGS)
 
-prod-destroy:
-	terraform destroy -var-file="environments/prod/main.tfvars"
+# Debug command to see what files are loaded
+debug-stage:
+	@echo "Stage TFVARS files:"
+	@for file in $(STAGE_TFVARS); do echo "  - $$file"; done
+	@echo "Flags: $(STAGE_FLAGS)"
+
+debug-prod:
+	@echo "Prod TFVARS files:"
+	@for file in $(PROD_TFVARS); do echo "  - $$file"; done
+	@echo "Flags: $(PROD_FLAGS)"
